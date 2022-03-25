@@ -1,0 +1,15 @@
+import TYPES from '@containers/global.types';
+import { inject, injectable } from 'inversify';
+
+import { HttpService, Repository } from '@euk-labs/fetchx';
+
+import { NewPersonSchema } from './people.schema';
+
+@injectable()
+class PeopleRepository extends Repository {
+  constructor(@inject(TYPES.ApiService) apiService: HttpService) {
+    super(apiService, { path: '/people' });
+  }
+}
+
+export default PeopleRepository;

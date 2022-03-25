@@ -1,0 +1,59 @@
+import { Grid } from '@mui/material'
+import { useRouter } from 'next/router'
+import useTranslation from '@core/hooks/useTranslation'
+import { zodValidator } from '@core/utils/validators'
+import { useUsersRepository } from '@hooks/repositories'
+import { useNotificationService } from '@hooks/services'
+import { Formix } from '@euk-labs/formix'
+import {
+  FXAutocomplete,
+  FXDatePicker,
+  FXPasswordField,
+  FXSubmitButton,
+  FXTextField,
+} from '@euk-labs/formix-mui'
+
+import { initialValuesForCreate } from '../initialValues'
+import { UserSchema, getUserSchema } from '../user.schema'
+
+function CreateUserForm() {
+  const { translate } = useTranslation()
+  const router = useRouter()
+  const notificationService = useNotificationService()
+  const usersRepository = useUsersRepository()
+
+  async function handleSubmit(values: UserSchema) {
+    const onSuccess = () => {
+      router.push('/users')
+    }
+
+    await notificationService.handleHttpRequest(
+      () => usersRepository.create(values),
+      {
+        feedbackSuccess: translate('feedbacks.user.created'),
+        feedbackError: translate('errors.users.creation'),
+        onSuccess,
+      }
+    )
+  }
+
+  return (
+    <Formix
+      initialValues={initialValuesForCreate}
+      validate={zodValidator(getUserSchema(translate))}
+      onSubmit={handleSubmit}
+    >
+      <Grid container spacing={2}>
+        <Grid item xs={6}>
+          <FXTextField name="person.name" label={translate('common.name')} />
+        </Grid>
+
+        <Grid item xs={12} display="flex" justifyContent="flex-end">
+          <FXSubmitButton label={translate('actions.save')} />
+        </Grid>
+      </Grid>
+    </Formix>
+  )
+}
+
+export default CreateUserForm
