@@ -1,10 +1,9 @@
 import { ResourceGenPrompt } from '../types/prompt'
 import { getNamesByResource } from './getNamesByResource'
-export function getGenerationOptions({ resource, ...rest }: ResourceGenPrompt) {
-  const { resourceName, ...resourceNames } = getNamesByResource(resource)
 
+export function getGenerationOptions({ resource, ...rest }: ResourceGenPrompt) {
+  const resourceNames = getNamesByResource(resource)
   const props = {
-    resourceName,
     ...resourceNames,
     ...rest,
   }
@@ -12,42 +11,37 @@ export function getGenerationOptions({ resource, ...rest }: ResourceGenPrompt) {
   return [
     {
       template: `UpdateForm.ejs`,
-      target: `src/modules/components/${resourceName}Field.tsx`,
+      target: `src/modules/${resource}/components/Update${resourceNames.resourceEntityNameCapitalized}Form.tsx`,
       props,
     },
     {
       template: `CreateForm.ejs`,
-      target: `src/modules/components/${resourceName}Form.tsx`,
+      target: `src/modules/${resource}/components/Create${resourceNames.resourceEntityNameCapitalized}Form.tsx`,
       props,
     },
     {
       template: `columns.ejs`,
-      target: `src/modules/columns.tsx`,
+      target: `src/modules/${resource}/columns.tsx`,
       props,
     },
     {
       template: `filters.ejs`,
-      target: `src/modules/filters.tsx`,
+      target: `src/modules/${resource}/filters.tsx`,
       props,
     },
     {
       template: `initialValues.ejs`,
-      target: `src/modules/initialValues.tsx`,
+      target: `src/modules/${resource}/initialValues.tsx`,
       props,
     },
     {
       template: `schema.ejs`,
-      target: `src/modules/${resource}.schema.tsx`,
+      target: `src/modules/${resource}/${resourceNames.resourceEntityName}.schema.tsx`,
       props,
     },
     {
       template: `repository.ejs`,
-      target: `src/modules/repository.tsx`,
-      props,
-    },
-    {
-      template: `types.ejs`,
-      target: `src/modules/types.tsx`,
+      target: `src/modules/${resource}/repository.tsx`,
       props,
     },
   ]

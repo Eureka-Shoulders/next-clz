@@ -1,5 +1,5 @@
 import * as zod from 'zod';
 
-export const UserSchema = zod.object();
+export const <%= props.resourceEntityNameCapitalized %>Schema = zod.object();
 
-export type UserSchema = zod.infer<typeof UserSchema>;
+export type <%= props.resourceEntityNameCapitalized %>Schema = zod.infer<typeof <%= props.resourceEntityNameCapitalized %>Schema>;

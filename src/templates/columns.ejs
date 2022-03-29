@@ -1,25 +1,17 @@
-import DeleteIcon from '@mui/icons-material/Delete';
 import {
-  GridActionsCellItem,
   GridActionsColDef,
   GridColDef,
-  GridRowParams,
-  GridValueFormatterParams,
 } from '@mui/x-data-grid';
-import { format } from 'date-fns';
-import { Actions, Subjects } from 'types';
 
-import Can from '@core/components/Can';
-import { renderEntityLink } from '@core/components/MuiTable/EntityLink';
 import { TranslateFunc } from '@core/hooks/useTranslation';
 
 import { Identifier } from '@euk-labs/fetchx';
 
-function getUserColumns(
+function get<%= props.resourceNameCapitalized %>Columns(
   handleDelete: (id: Identifier) => void,
   translate: TranslateFunc
 ): (GridActionsColDef | GridColDef)[] {
   return [];
 }
 
-export default getUserColumns;
+export default get<%= props.resourceNameCapitalized %>Columns;

@@ -1,5 +1,3 @@
-import { add, format } from 'date-fns';
-
 import { Filter } from '@core/components/Filters/types';
 import { TranslateFunc } from '@core/hooks/useTranslation';
 
@@ -12,7 +10,6 @@ export function buildFilters(
   urlSearchParams: URLSearchParams
 ) {
   const whereObject: Record<string, unknown> = {};
-
 
   urlSearchParams.set('where', JSON.stringify(whereObject));
 }

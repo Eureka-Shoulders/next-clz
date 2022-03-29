@@ -6,34 +6,31 @@ import { useNotificationService } from '@hooks/services';
 import { EntityStore } from '@euk-labs/fetchx';
 import { Formix } from '@euk-labs/formix';
 import {
-  FXAutocomplete,
-  FXDatePicker,
-  FXPasswordField,
   FXSubmitButton,
   FXTextField,
 } from '@euk-labs/formix-mui';
 
-import { UserSchema, getUserSchema } from '../user.schema';
+import { <%= props.resourceEntityNameCapitalized %>Schema } from '../<%= props.resourceEntityName %>.schema';
 
 interface Props {
-  userEntity: EntityStore;
+  <%= props.resourceEntityName %>Entity: EntityStore;
 }
 
-function UpdateUserForm({ userEntity }: Props) {
+function Update<%= props.resourceEntityNameCapitalized %>Form({ <%= props.resourceEntityName %>Entity }: Props) {
   const { translate } = useTranslation();
   const router = useRouter();
   const notificationService = useNotificationService();
 
-  async function handleSubmit(values: UserSchema) {
+  async function handleSubmit(values: <%= props.resourceEntityNameCapitalized %>Schema) {
     const onSuccess = () => {
-      router.push('/users');
+      router.push('/<%= props.resourceName %>');
     };
 
     await notificationService.handleHttpRequest(
-      () => userEntity.update(values),
+      () => <%= props.resourceEntityName %>Entity.update(values),
       {
-        feedbackSuccess: translate('feedbacks.user.updated'),
-        feedbackError: translate('errors.user.update'),
+        feedbackSuccess: translate('feedbacks.<%= props.resourceEntityName %>.updated'),
+        feedbackError: translate('errors.<%= props.resourceName %>.update'),
         onSuccess,
       }
     );
@@ -41,13 +38,13 @@ function UpdateUserForm({ userEntity }: Props) {
 
   return (
     <Formix
-      initialValues={userEntity.data as UserSchema}
-      validate={zodValidator(getUserSchema(translate))}
+      initialValues={<%= props.resourceEntityName %>Entity.data as <%= props.resourceEntityNameCapitalized %>Schema}
+      validate={zodValidator(<%= props.resourceEntityNameCapitalized %>Schema)}
       onSubmit={handleSubmit}
     >
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <FXTextField name="person.name" label={translate('common.name')} />
+          <FXTextField name="name" label={translate('common.name')} />
         </Grid>
 
         <Grid item xs={12} display="flex" justifyContent="flex-end">
@@ -58,4 +55,4 @@ function UpdateUserForm({ userEntity }: Props) {
   );
 }
 
-export default UpdateUserForm;
+export default Update<%= props.resourceEntityNameCapitalized %>Form;

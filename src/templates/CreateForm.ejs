@@ -2,36 +2,33 @@ import { Grid } from '@mui/material'
 import { useRouter } from 'next/router'
 import useTranslation from '@core/hooks/useTranslation'
 import { zodValidator } from '@core/utils/validators'
-import { useUsersRepository } from '@hooks/repositories'
+import { use<%= props.resourceNameCapitalized %>Repository } from '@hooks/repositories'
 import { useNotificationService } from '@hooks/services'
 import { Formix } from '@euk-labs/formix'
 import {
-  FXAutocomplete,
-  FXDatePicker,
-  FXPasswordField,
   FXSubmitButton,
   FXTextField,
 } from '@euk-labs/formix-mui'
 
 import { initialValuesForCreate } from '../initialValues'
-import { UserSchema, getUserSchema } from '../user.schema'
+import { <%= props.resourceEntityNameCapitalized %>Schema } from '../<%= props.resourceEntityName %>.schema'
 
-function CreateUserForm() {
+function Create<%= props.resourceEntityNameCapitalized %>Form() {
   const { translate } = useTranslation()
   const router = useRouter()
   const notificationService = useNotificationService()
-  const usersRepository = useUsersRepository()
+  const <%= props.resourceName %>Repository = use<%= props.resourceNameCapitalized %>Repository()
 
-  async function handleSubmit(values: UserSchema) {
+  async function handleSubmit(values: <%= props.resourceEntityNameCapitalized %>Schema) {
     const onSuccess = () => {
-      router.push('/users')
+      router.push('/<%= props.resourceName %>')
     }
 
     await notificationService.handleHttpRequest(
-      () => usersRepository.create(values),
+      () => <%= props.resourceName %>Repository.create(values),
       {
-        feedbackSuccess: translate('feedbacks.user.created'),
-        feedbackError: translate('errors.users.creation'),
+        feedbackSuccess: translate('feedbacks.<%= props.resourceEntityName %>.created'),
+        feedbackError: translate('errors.<%= props.resourceName %>.creation'),
         onSuccess,
       }
     )
@@ -40,12 +37,12 @@ function CreateUserForm() {
   return (
     <Formix
       initialValues={initialValuesForCreate}
-      validate={zodValidator(getUserSchema(translate))}
+      validate={zodValidator(<%= props.resourceEntityNameCapitalized %>Schema)}
       onSubmit={handleSubmit}
     >
       <Grid container spacing={2}>
         <Grid item xs={6}>
-          <FXTextField name="person.name" label={translate('common.name')} />
+          <FXTextField name="name" label={translate('common.name')} />
         </Grid>
 
         <Grid item xs={12} display="flex" justifyContent="flex-end">
@@ -56,4 +53,4 @@ function CreateUserForm() {
   )
 }
 
-export default CreateUserForm
+export default Create<%= props.resourceEntityNameCapitalized %>Form

@@ -3,13 +3,11 @@ import { inject, injectable } from 'inversify';
 
 import { HttpService, Repository } from '@euk-labs/fetchx';
 
-import { NewPersonSchema } from './people.schema';
-
 @injectable()
-class PeopleRepository extends Repository {
+class <%= props.resourceNameCapitalized %>Repository extends Repository {
   constructor(@inject(TYPES.ApiService) apiService: HttpService) {
-    super(apiService, { path: '/people' });
+    super(apiService, { path: '/<%= props.resourceName %>' });
   }
 }
 
-export default PeopleRepository;
+export default <%= props.resourceNameCapitalized %>Repository;
